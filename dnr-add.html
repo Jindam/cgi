@@ -1,0 +1,353 @@
+<div id="addnewdonor">
+  <h1>Add New Donor</h1>
+  <p-stepper orientation="vertical">
+    <p-stepperPanel header="General Information">
+      <ng-template pTemplate="content" let-nextCallback="nextCallback">
+        <form [formGroup]="form">
+          <p-card styleClass="mb-1">
+            <div class="formgrid grid">
+              <div class="field required col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="donorType" class="field-label">Donor Type</label>
+                <p-dropdown id="donorType" formControlName="donorType" [options]="donorTypes" optionLabel="text"
+                  placeholder="Please Select" optionValue="value" />
+              </div>
+            </div>
+          </p-card>
+
+          <p-card styleClass="mb-1">
+            <div class="formgrid grid">
+
+              <div class="field col-2 sm:col-1 md:col-1 lg:col-2">
+                <label for="prefix" class="field-label">Prifix</label>
+                <input id="prefix" type="text" pInputText formControlName="prefix" />
+              </div>
+
+              <div class="field required col-8 sm:col-4 md:col-3 lg:col-2">
+                <label for="firstName" class="field-label">First Name</label>
+                <input id="firstName" type="text" pInputText formControlName="firstName" />
+              </div>
+
+              <div class="field col-8 sm:col-4 md:col-3 lg:col-2">
+                <label for="middleName" class="field-label">Middle Name</label>
+                <input id="middleName" type="text" pInputText formControlName="middleName" />
+              </div>
+
+              <div class="field required col-8 sm:col-4 md:col-3 lg:col-2">
+                <label for="lastName" class="field-label">Last Name</label>
+                <input id="lastName" type="text" pInputText formControlName="lastName" />
+              </div>
+
+              <div class="field col-2 sm:col-1 md:col-1 lg:col-2">
+                <label for="suffix" class="field-label">Suffix</label>
+                <input id="suffix" type="text" pInputText formControlName="suffix" />
+              </div>
+
+            </div>
+          </p-card>
+
+          <p-card styleClass="mb-1">
+            <div class="formgrid grid">
+
+              <div class="field col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="currentlyEmployed" class="field-label">Currently Employed?</label>
+              </div>
+              <div class="field col-12 sm:col-6 md:col-4 lg:col-3">
+                <div class="flex flex-wrap gap-3">
+                  <div class="flex align-items-center">
+                    <p-radioButton name="currentlyEmployed" value="yes"
+                      formControlName="currentlyEmployed"></p-radioButton>
+                    <label for="currentlyEmployed" class="ml-2">Yes</label>
+                  </div>
+                  <div class="flex align-items-center">
+                    <p-radioButton name="currentlyEmployed" value="no"
+                      formControlName="currentlyEmployed"></p-radioButton>
+                    <label for="currentlyEmployed" class="ml-2">No</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="formgrid grid">
+
+              <div class="field col-12 sm:col-6 md:col-4 lg:col-3" *ngIf="isEmployed === 'no'">
+                <label for="employmentStatus" class="field-label">Employment Status</label>
+                <p-dropdown id="employmentStatus" formControlName="employmentStatus" [options]="employmentStatuses"
+                  optionLabel="name" optionValue="value" placeholder="Please Select" />
+              </div>
+
+              <div class="field col-12 sm:col-6 md:col-4 lg:col-3" *ngIf="isEmployed === 'yes'">
+                <label for="employer" class="field-label">Employer:</label>
+                <input id="employer" type="text" pInputText formControlName="employer" />
+              </div>
+
+              <div class="field col-12 sm:col-6 md:col-4 lg:col-3" *ngIf="isEmployed === 'yes'">
+                <label for="Occupation" class="field-label">Occupation:</label>
+                <input id="Occupation" type="text" pInputText formControlName="Occupation" />
+              </div>
+
+            </div>
+          </p-card>
+
+          <p-card styleClass="mb-1">
+            <div class="formgrid grid">
+
+              <div class="field col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="donorId" class="field-label">Donor ID</label>
+                <input id="donorId" type="text" pInputText formControlName="donorId" />
+              </div>
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="legacyId" class="field-label">Legacy ID</label>
+                <input id="legacyId" type="text" pInputText formControlName="legacyId" />
+              </div>
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="candidateId" class="field-label">Candidate </label>
+                <input id="candidateId" type="text" pInputText formControlName="candidateId" />
+              </div>
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="dateOfBirth" class="field-label">Date of Birth</label>
+                <p-calendar formControlName="dateOfBirth" [showIcon]="true" placeholder="MM/DD/YYYY">
+                </p-calendar>
+              </div>
+
+            </div>
+          </p-card>
+        </form>
+
+        <div class="flex pt-4 justify-content-end">
+          <p-button label="Next" icon="pi pi-arrow-right" (click)="nextCallback.emit()"></p-button>
+        </div>
+      </ng-template>
+    </p-stepperPanel>
+
+    <p-stepperPanel header="Contact">
+      <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback">
+        <form [formGroup]="form">
+          <!-- <p-button label="Add Address" class="mb-3" (click)="addAddress()"></p-button> -->
+          <p-button label="Add Address" icon="fa-sharp fa-light fa-plus" styleClass="p-button-secondary m-1"
+            [text]="true" (click)="addAddress()" />
+          <div>&nbsp;</div>
+
+          <div *ngFor="let address of addressFormsControls; let i = index">
+            <app-donor-address [form]="address" [addressTypes]="addressTypes" [states]="states"
+              (remove)="removeAddress(i)"></app-donor-address>
+          </div>
+
+          <div>&nbsp;</div>
+
+          <p-card styleClass="mb-1">
+            <div class="formgrid grid">
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="homePhone" class="field-label">Home Phone</label>
+                <input id="homePhone" type="text" pInputText formControlName="homePhone" />
+              </div>
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="mobilePhone" class="field-label">Mobile Phone</label>
+                <input id="mobilePhone" type="text" pInputText formControlName="mobilePhone" />
+              </div>
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="faxNumber" class="field-label">Fax Number</label>
+                <input id="faxNumber" type="text" pInputText formControlName="faxNumber" />
+              </div>
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="officePhone" class="field-label">Office Phone</label>
+                <input id="officePhone" type="text" pInputText formControlName="officePhone" />
+              </div>
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="alternatePhone" class="field-label">Alternate Phone</label>
+                <input id="alternatePhone" type="text" pInputText formControlName="alternatePhone" />
+              </div>
+
+            </div>
+          </p-card>
+
+          <p-card styleClass="mb-1">
+
+            <div class="formgrid grid">
+              <div formArrayName="emails" class=" grid col-12">
+
+                <div *ngFor=" let email of emailControls.controls; let i = index"
+                  class="field align-items-center col-12 sm:col-6 md:col-4 lg:col-3">
+
+                  <div class=" field flex-grow-1">
+                    <label for="email" class="field-label">Email</label>
+                    <input type="email" pInputText [formControlName]="i" placeholder="" />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="field-label">&nbsp;</label>
+                  <p-button label="Additional Emails" icon="fa-sharp fa-light fa-plus"
+                    styleClass="p-button-secondary m-1" [text]="true" (click)="addEmail()" />
+                </div>
+
+              </div>
+
+            </div>
+          </p-card>
+
+          <div class="flex pt-4 justify-content-between">
+            <p-button label="Back" icon="pi pi-arrow-left" (click)="prevCallback.emit()"></p-button>
+            <p-button label="Next" icon="pi pi-arrow-right" (click)="nextCallback.emit()"></p-button>
+          </div>
+        </form>
+      </ng-template>
+
+    </p-stepperPanel>
+
+    <p-stepperPanel header="Relationships">
+      <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback">
+
+        <!-- <p-button label="Add Relationship Type" class="mb-3" (click)="addRelationshipType()"></p-button> -->
+        <p-button label="Add Another Person" icon="fa-sharp fa-light fa-plus" styleClass="p-button-secondary m-1"
+          [text]="true" (click)="addRelationshipType()" />
+        <div>&nbsp;</div>
+
+        <div *ngFor="let relationshipType of relationshipTypeFormsControls; let i = index">
+          <app-donor-relationshiptypes [form]="relationshipType" [relationshipTypes]="relationshipTypes"
+            [sameHouseHolds]="sameHouseHolds" (remove)="removeRelationshipType(i)"></app-donor-relationshiptypes>
+        </div>
+
+        <div>&nbsp;</div>
+
+        <div class="flex pt-4 justify-content-between">
+          <p-button label="Back" icon="pi pi-arrow-left" (click)="prevCallback.emit()"></p-button>
+          <p-button label="Next" icon="pi pi-arrow-right" (click)="nextCallback.emit()"></p-button>
+        </div>
+
+      </ng-template>
+    </p-stepperPanel>
+
+    <p-stepperPanel header="Additional Data">
+      <ng-template pTemplate="content" let-prevCallback="prevCallback">
+        <form [formGroup]="form">
+
+          <p-card styleClass="mb-1">
+
+            <div class="formgrid grid">
+              <div formArrayName="donorFlagIds" class=" grid col-12">
+
+                <div *ngFor=" let donorFlag of donorFlagControls.controls; let i = index"
+                  class="field align-items-center col-12 sm:col-6 md:col-4 lg:col-3">
+
+                  <div class=" field flex-grow-1">
+                    <label for="i" class="field-label">Donor Flag</label>
+                    <p-autoComplete [formControlName]="i" [suggestions]="filteredFlags"
+                      (completeMethod)="filterFlags($event)" field="value" (onSelect)="onDonorFlagSelect($event, i)"
+                      placeholder="Type to Search" />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="" class="field-label">&nbsp;</label>
+                  <p-button label="Add Another Flag" icon="fa-sharp fa-light fa-plus"
+                    styleClass="p-button-secondary m-1" [text]="true" (click)="addDonorFlag()" />
+                </div>
+              </div>
+            </div>
+
+            <div class="formgrid grid">
+              <p-button label="Add New Type" icon="fa-sharp fa-light fa-plus" styleClass="p-button-secondary m-1"
+                [text]="true" size="small" (onClick)="showDialog = true" />
+
+              <p-dialog [(visible)]="showDialog" position="topright" [modal]="true" draggable="false"
+                [style]="{height:'100%' }">
+
+                <ng-template pTemplate="header">
+                  <h4>Add New Donor Flag Type</h4>
+                </ng-template>
+                <div>&nbsp;</div>
+
+                <div class="field col-12">
+                  <label for="donorFlagName" class="field-label">Donor Flag Name</label>
+                  <input id="donorFlagName" type="text" pInputText [(ngModel)]="donorFlagName"
+                    [ngModelOptions]="{standalone: true}" />
+                </div>
+
+                <div class="field col-12">
+                  <label for="cycleYear" class="field-label">Cycle Year</label>
+                  <input id="cycleYear" type="text" pInputText [(ngModel)]="cycleYear" placeholder="YYYY"
+                    [maxlength]="4" [ngModelOptions]="{standalone: true}" />
+                </div>
+
+                <div class="field col-12">
+                  <label for="flagDescription" class="field-label">Flag Description</label>
+                  <textarea rows="5" cols="43" pInputTextarea [(ngModel)]="flagDescription"
+                    [ngModelOptions]="{standalone: true}">          </textarea>
+                </div>
+
+                <div class="flex pt-4 justify-content-end">
+                  <p-button label="Cancel" [text]="true" (onClick)="showDialog = false"></p-button>
+                  <p-button label="Save" (click)="saveNewDonorFlagType()"></p-button>
+                </div>
+                <div>&nbsp;</div>
+              </p-dialog>
+
+            </div>
+          </p-card>
+
+          <p-card styleClass="mb-1">
+            <div class="formgrid grid">
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="informalName" class="field-label">Informal Name</label>
+                <input id="informalName" type="text" pInputText formControlName="informalName" />
+              </div>
+
+              <div class="field  col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="formalSalutation" class="field-label">Formal Salutation</label>
+                <input id="formalSalutation" type="text" pInputText formControlName="formalSalutation" />
+              </div>
+
+              <div class="field col-12 sm:col-6 md:col-4 lg:col-3">
+                <label for="mailSalutation" class="field-label">Mail Salutation</label>
+                <input id="mailSalutation" type="text" pInputText formControlName="mailSalutation" />
+              </div>
+
+            </div>
+          </p-card>
+
+          <p-card styleClass="mb-1">
+            <div class="formgrid grid">
+
+              <div class="field col-8 sm:col-4 md:col-2 lg:col-2">
+                <!-- <label for="">&nbsp;</label> -->
+                <p-checkbox [binary]="true" label="Do Not Solicit" formControlName="doNotSolicit" name="doNotSolicit" />
+              </div>
+
+              <div class="field col-8 sm:col-4 md:col-2 lg:col-2">
+                <p-checkbox [binary]="true" label="Do Not Mail" formControlName="doNotMail" name="doNotMail" />
+              </div>
+
+              <div class="field col-8 sm:col-4 md:col-2 lg:col-2">
+                <p-checkbox [binary]="true" label="Do Not Email" formControlName="doNotEmail" name="doNotEmail" />
+              </div>
+
+              <div class="field col-8 sm:col-4 md:col-2 lg:col-2">
+                <p-checkbox [binary]="true" label="Do Not Call" formControlName="doNotCall" name="doNotCall" />
+              </div>
+
+              <div class="field col-8 sm:col-4 md:col-2 lg:col-2">
+                <p-checkbox [binary]="true" label="Is Deceased" name="isDeceased" formControlName="isDeceased" />
+              </div>
+            </div>
+          </p-card>
+
+        </form>
+      </ng-template>
+    </p-stepperPanel>
+  </p-stepper>
+
+  <!-- <div class="mt-4"> -->
+  <div class="flex pt-4 justify-content-end">
+    <p-button label="Cancel" [text]="true"></p-button>
+    <p-button label="Save" [disabled]="form.invalid" (click)="save()"></p-button>
+  </div>
+</div>
